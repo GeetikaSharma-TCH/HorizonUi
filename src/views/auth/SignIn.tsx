@@ -1,8 +1,26 @@
 import InputField from "components/fields/InputField";
 import { FcGoogle } from "react-icons/fc";
 import Checkbox from "components/checkbox";
+// Auth Details
+import { auth } from "views/firebase/firebaseConfig";
 
+// Google AUthentication functions
+import { GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
 export default function SignIn() {
+
+  // to sign in with google
+  const SignInWithGoogle = () => {
+    console.log('signIn google', auth)
+    const googleProvider = new GoogleAuthProvider()
+    signInWithRedirect(auth, googleProvider)
+      .then((response) => {
+        console.log('repsonse', response)
+      })
+      .catch((error) => {
+        console.log('error', error)
+      })
+  }
+
   return (
     <div className="mt-16 mb-16 flex h-full w-full items-center justify-center px-2 md:mx-0 md:px-0 lg:mb-10 lg:items-center lg:justify-start">
       {/* Sign in section */}
@@ -17,7 +35,7 @@ export default function SignIn() {
           <div className="rounded-full text-xl">
             <FcGoogle />
           </div>
-          <h5 className="text-sm font-medium text-navy-700 dark:text-white">
+          <h5 className="text-sm font-medium text-navy-700 dark:text-white" onClick={SignInWithGoogle}>
             Sign In with Google
           </h5>
         </div>
