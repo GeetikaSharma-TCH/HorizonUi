@@ -6,8 +6,11 @@ import { auth } from "views/firebase/firebaseConfig";
 
 // Google AUthentication functions
 import { GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 export default function SignIn() {
 
+  const navigationData = useNavigate()
+  
   // to sign in with google
   const SignInWithGoogle = () => {
     console.log('signIn google', auth)
@@ -19,6 +22,12 @@ export default function SignIn() {
       .catch((error) => {
         console.log('error', error)
       })
+  }
+
+  // click on create new Account
+  const createNewUser = () => {
+    console.log('createNewUser')
+    navigationData('/createAccount')
   }
 
   return (
@@ -88,6 +97,7 @@ export default function SignIn() {
           <a
             href=" "
             className="ml-1 text-sm font-medium text-brand-500 hover:text-brand-600 dark:text-white"
+            onClick={createNewUser}
           >
             Create an account
           </a>

@@ -10,8 +10,10 @@ function InputField(props: {
   state?: string;
   disabled?: boolean;
   type?: string;
+  value?: string | number;
+  onChange?: ( event : any) => void;
 }) {
-  const { label, id, extra, type, placeholder, variant, state, disabled } =
+  const { label, id, extra, type, placeholder, variant, state, disabled, value, onChange } =
     props;
 
   return (
@@ -38,6 +40,8 @@ function InputField(props: {
             ? "border-green-500 text-green-500 placeholder:text-green-500 dark:!border-green-400 dark:!text-green-400 dark:placeholder:!text-green-400"
             : "border-gray-200 dark:!border-white/10 dark:text-white"
         }`}
+        value={value}
+        onChange={onChange}
       />
     </div>
   );
