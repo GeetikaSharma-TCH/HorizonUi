@@ -11,15 +11,25 @@ import {
   IoMdInformationCircleOutline,
 } from "react-icons/io";
 import avatar from "assets/img/avatars/avatar4.png";
-
+import { auth } from "views/firebase/firebaseConfig";
+import { signOut } from "firebase/auth";
 const Navbar = (props: {
   onOpenSidenav: () => void;
   brandText: string;
   secondary?: boolean | string;
+  // signOutUser?: () => void;
 }) => {
   const { onOpenSidenav, brandText } = props;
   const [darkmode, setDarkmode] = React.useState(false);
 
+  // Sign Out User
+  const signOutUser = (event : any) => {
+    event.preventDefault()
+    console.log('sign Out User', auth)
+    signOut(auth)
+      .then((res) => console.log('res', res))
+      .catch((error) => console.log('err', error))
+  }
   return (
     <nav className="sticky top-4 z-40 flex flex-row flex-wrap items-center justify-between rounded-xl bg-white/10 p-2 backdrop-blur-xl dark:bg-[#0b14374d]">
       <div className="ml-[6px]">
@@ -215,6 +225,7 @@ const Navbar = (props: {
                 <a
                   href=" "
                   className="mt-3 text-sm font-medium text-red-500 hover:text-red-500"
+                  onClick={signOutUser}
                 >
                   Log Out
                 </a>
