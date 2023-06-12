@@ -39,7 +39,7 @@ export default function SignIn() {
 
   // Sign In Functionality
   const SignInUser = () => {
-    console.log('SignInUser')
+    console.log('SignInUser', auth)
     signInWithEmailAndPassword(auth, userData.email, userData.password)
       .then((userCredentials) => {
         console.log('userCredentials', userCredentials)

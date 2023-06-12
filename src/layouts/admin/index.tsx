@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "components/navbar";
 import Sidebar from "components/sidebar";
@@ -19,10 +19,24 @@ export default function Admin(props: { [x: string]: any }) {
       window.innerWidth < 1200 ? setOpen(false) : setOpen(true)
     );
   }, []);
+
+   // check Auth Status
+   const onAuthStatus = useCallback(() => {
+    onAuthStateChanged(auth, (user) => {
+      console.log('user====', user)
+      if (user !== null && user.emailVerified) {
+        console.log('signim')
+      } else {
+        console.log(' Not signim')
+        navigationData('/auth/sign-in')
+      }
+    })
+  }, [navigationData])
+  
   React.useEffect(() => {
     getActiveRoute(routes);
     onAuthStatus();
-  }, [location.pathname]);
+  }, [location.pathname, onAuthStatus]);
 
   const getActiveRoute = (routes: RoutesType[]): string | boolean => {
     let activeRoute = "Main Dashboard";
@@ -60,18 +74,6 @@ export default function Admin(props: { [x: string]: any }) {
     });
   };
 
-  // check Auth Status
-  const onAuthStatus = () => {
-    onAuthStateChanged(auth, (user) => {
-      console.log('user====', user)
-      if (user !== null && user.emailVerified) {
-        console.log('signim')
-      } else {
-        console.log(' Not signim')
-        navigationData('/auth/sign-in')
-      }
-    })
-  }
   document.documentElement.dir = "ltr";
   return (
     <div className="flex h-full w-full">
