@@ -6,6 +6,7 @@ import Footer from "components/footer/Footer";
 import routes from "routes";
 
 export default function RTL() {
+  console.log('RTL')
   const location = useLocation();
   const [open, setOpen] = React.useState(true);
   const [currentRoute, setCurrentRoute] = React.useState("Main Dashboard");

@@ -72,6 +72,7 @@ const CreateAccount = () => {
               placeholder="mail@simmmple.com"
               id="email"
               type="text"
+              value={userData.email}
               onChange={change}
             />
     

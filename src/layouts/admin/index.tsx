@@ -1,13 +1,16 @@
 import React from "react";
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "components/navbar";
 import Sidebar from "components/sidebar";
 import Footer from "components/footer/Footer";
 import routes from "routes";
-
+import { auth } from "views/firebase/firebaseConfig";
+import { onAuthStateChanged } from "firebase/auth";
 export default function Admin(props: { [x: string]: any }) {
+  console.log('auth admin layout', auth)
   const { ...rest } = props;
   const location = useLocation();
+  const navigationData = useNavigate()
   const [open, setOpen] = React.useState(true);
   const [currentRoute, setCurrentRoute] = React.useState("Main Dashboard");
 
@@ -18,6 +21,7 @@ export default function Admin(props: { [x: string]: any }) {
   }, []);
   React.useEffect(() => {
     getActiveRoute(routes);
+    onAuthStatus();
   }, [location.pathname]);
 
   const getActiveRoute = (routes: RoutesType[]): string | boolean => {
@@ -56,6 +60,18 @@ export default function Admin(props: { [x: string]: any }) {
     });
   };
 
+  // check Auth Status
+  const onAuthStatus = () => {
+    onAuthStateChanged(auth, (user) => {
+      console.log('user====', user)
+      if (user !== null && user.emailVerified) {
+        console.log('signim')
+      } else {
+        console.log(' Not signim')
+        navigationData('/auth/sign-in')
+      }
+    })
+  }
   document.documentElement.dir = "ltr";
   return (
     <div className="flex h-full w-full">

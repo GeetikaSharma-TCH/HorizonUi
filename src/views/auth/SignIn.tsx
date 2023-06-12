@@ -5,12 +5,17 @@ import Checkbox from "components/checkbox";
 import { auth } from "views/firebase/firebaseConfig";
 
 // Google AUthentication functions
-import { GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
+import { GoogleAuthProvider, signInWithRedirect, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 export default function SignIn() {
 
   const navigationData = useNavigate()
-  
+  const [ userData, setUserData ] = useState({
+    email: '',
+    password: ''
+  })
+
   // to sign in with google
   const SignInWithGoogle = () => {
     console.log('signIn google', auth)
@@ -18,6 +23,32 @@ export default function SignIn() {
     signInWithRedirect(auth, googleProvider)
       .then((response) => {
         console.log('repsonse', response)
+      })
+      .catch((error) => {
+        console.log('error', error)
+      })
+  }
+
+  // On change input 
+  const changeData = (event : React.ChangeEvent<HTMLInputElement>) => {
+    console.log('chanegData')
+    setUserData({...userData,
+      [event.target.id] : event.target.value
+    })
+  }
+
+  // Sign In Functionality
+  const SignInUser = () => {
+    console.log('SignInUser')
+    signInWithEmailAndPassword(auth, userData.email, userData.password)
+      .then((userCredentials) => {
+        console.log('userCredentials', userCredentials)
+        if(userCredentials.user.emailVerified) {
+          navigationData('/admin/default')
+          alert('Sign In Successfully')
+        } else {
+          alert('Email is not Verified ')
+        }
       })
       .catch((error) => {
         console.log('error', error)
@@ -61,6 +92,8 @@ export default function SignIn() {
           placeholder="mail@simmmple.com"
           id="email"
           type="text"
+          value={userData.email}
+          onChange={changeData}
         />
 
         {/* Password */}
@@ -71,6 +104,8 @@ export default function SignIn() {
           placeholder="Min. 8 characters"
           id="password"
           type="password"
+          value={userData.password}
+          onChange={changeData}
         />
         {/* Checkbox */}
         <div className="mb-4 flex items-center justify-between px-2">
@@ -87,7 +122,9 @@ export default function SignIn() {
             Forgot Password?
           </a>
         </div>
-        <button className="linear mt-2 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200">
+        <button 
+          className="linear mt-2 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
+          onClick={SignInUser}>
           Sign In
         </button>
         <div className="mt-4">
